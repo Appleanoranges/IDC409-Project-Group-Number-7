@@ -8,12 +8,11 @@ event_type = df.pop('type')
 '''print("Remaining columns for features:")
 print(df.columns)'''
 
-# Example: suppose df contains only your features (no labels)
 df_norm = (df - df.mean()) / df.std()
 # Convert to numpy array
 X = df_norm.values
 
-# Subtract mean again just in case
+# Subtract mean again
 X_centered = X - X.mean(axis=0)
 
 # Covariance matrix
@@ -28,7 +27,7 @@ eig_vals = eig_vals[sorted_idx]
 eig_vecs = eig_vecs[:, sorted_idx]
 
 # Choose top k principal components
-k = 18
+k = 18 #Chosen Manually
 principal_components = eig_vecs[:, :k]
 
 # eig_vals: sorted list/array of all eigenvalues (descending)
