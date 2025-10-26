@@ -19,7 +19,7 @@ y = df["label"]
 # Split into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Standardize features (important for neural networks)
+# Standardize features
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
@@ -60,6 +60,6 @@ plt.legend(loc='upper center')
 plt.grid(True)
 plt.show()
 
-# Optionally calculate and print AUC
+# Calculate and print AUC
 roc_auc = roc_auc_score(y_test, y_pred_proba)
 print(f"AUC Score: {roc_auc:.4f}")
