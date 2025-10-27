@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import StratifiedKFold
 
 # Load your dataset
-df = pd.read_csv("df_reduced_output.csv")
+df = pd.read_csv("new_df_reduced_output.csv")
 #df= pd.read_csv("pca_transformed_data.csv")
 
 # Prepare features and labels
