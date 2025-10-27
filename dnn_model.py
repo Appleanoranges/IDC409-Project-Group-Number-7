@@ -1,19 +1,20 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, classification_report
-import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, roc_auc_score
 
 # Load your CSV file
-df = pd.read_csv("df_reduced_output.csv")
-#df= pd.read_csv("pca_transformed_data.csv")
-#df= pd.read_csv("data_hep.csv")
+df = pd.read_csv("df_reduced_output.csv") #Uncomment to run on Correlation Removed Data
+#df= pd.read_csv("pca_transformed_data.csv") #Uncomment to run on PCA data
+#df= pd.read_csv("data_hep.csv") #Uncomment both 13 and 14 to run on Raw Data
 #df["label"] = df["type"].apply(lambda x: 0 if x in [0, 1] else 1)
+
 # Prepare features and labels
-X = df.drop(columns=["label", "type"], errors="ignore")
+X = df.drop(columns=["label", "type","Unnamed: 0"], errors="ignore")
 y = df["label"]
 
 # Split into training and test sets
@@ -41,12 +42,16 @@ accuracy = accuracy_score(y_test, y_pred)
 print(f"Test Accuracy: {accuracy:.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
+
 # Get model predicted probabilities for the positive class (signal)
 y_pred_proba = model.predict_proba(X_test_scaled)[:, 1]
 
 # Separate predictions for signal and background
 signal_scores = y_pred_proba[y_test == 1]
 background_scores = y_pred_proba[y_test == 0]
+
+# Calculate ROC curve
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
 
 # Histogram plot
 plt.figure(figsize=(8, 6))
@@ -63,3 +68,14 @@ plt.show()
 # Calculate and print AUC
 roc_auc = roc_auc_score(y_test, y_pred_proba)
 print(f"AUC Score: {roc_auc:.4f}")
+
+# Plot the ROC curve
+plt.figure(figsize=(8,6))
+plt.plot(fpr, tpr, color='blue', lw=2, label=f'ROC curve (AUC = {roc_auc:.3f})')
+plt.plot([0, 1], [0, 1], color='red', lw=2, linestyle='--', label='Random guess (AUC=0.5)')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve')
+plt.legend(loc='lower right')
+plt.grid(True)
+plt.show()
