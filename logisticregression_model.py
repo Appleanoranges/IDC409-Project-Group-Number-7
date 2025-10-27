@@ -3,15 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import StratifiedKFold
 
-# Load your dataset
+# 1. Load your dataset
 df = pd.read_csv("new_df_reduced_output.csv")
 #df= pd.read_csv("pca_transformed_data.csv")
 
-# Prepare features and labels
+# 2. Prepare features and labels
 X = df.drop(columns=["label", "type"], errors="ignore")
 y = df["label"]
 
-# 4. Manual logistic regression functions
+# 3. Manual(without external library) logistic regression functions
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
@@ -52,7 +52,7 @@ def confusion_matrix(y_true, y_pred):
     FN = np.sum((y_pred == 0) & (y_true == 1))
     return np.array([[TN, FP], [FN, TP]])
 
-# 5. Stratified K-fold cross-validation
+# 4. Stratified K-fold cross-validation
 k = 5
 skf = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)
 metrics = {'accuracy': [], 'precision': [], 'recall': [], 'f1': [], 'auc': []}
@@ -127,7 +127,7 @@ print(f"AUC: {np.mean(metrics['auc']):.3f}")
 
 print(f"\nCross-validation mean accuracy score: {np.mean(metrics['accuracy']):.3f}")
 
-# 6. Train main model on full data and plot graphs & confusion matrix
+# 5. Training main model on full data and plot graphs & confusion matrix
 full_mean = np.mean(X, axis=0)
 full_std = np.std(X, axis=0)
 full_std[full_std == 0] = 1
