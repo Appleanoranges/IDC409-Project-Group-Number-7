@@ -64,5 +64,5 @@ plt.legend()
 plt.show()
 
 # Save results
-df.to_csv("continuum_with_BDT_CV.csv", index=False)
+df.to_csv("continuum_with_BDT_CV_pca.csv", index=False)
 print("BDT scores added and saved to continuum_with_BDT_CV.csv")
