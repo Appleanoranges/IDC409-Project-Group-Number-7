@@ -14,7 +14,7 @@ df = pd.read_csv("df_reduced_output.csv") #Uncomment to run on Correlation Remov
 #df["label"] = df["type"].apply(lambda x: 0 if x in [0, 1] else 1)
 
 # Prepare features and labels
-X = df.drop(columns=["label", "type","Unnamed: 0"], errors="ignore")
+X = df.drop(columns=["label", "type"], errors="ignore")
 y = df["label"]
 
 # Split into training and test sets
